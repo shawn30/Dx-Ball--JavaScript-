@@ -1,0 +1,110 @@
+<html>
+
+<head>
+</head>
+<style>
+    #score {
+        color: rgb(100, 100, 100, .9);
+        width: 100%;
+        text-align: center;
+        font-size: 100px;
+    }
+    
+    #ball {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        background-color: aqua;
+        position: absolute;
+    }
+    
+    #bar {
+        width: 350px;
+        height: 30px;
+        position: absolute;
+        bottom: 0;
+        background-color: gray;
+        border-radius: 10px;
+    }
+</style>
+<script>
+    var x = 10,
+        y = 10,
+        b = 0,
+        flagx = true,
+        flagy = true,
+        game = 1,
+        count = 0;
+
+    function reset() {
+        x = 10,
+            y = 10,
+            b = 0,
+            flagx = true,
+            flagy = true,
+            game = 1,
+            count = 0;
+        document.getElementById("score").innerHTML = "GameOver";
+        setTimeout("bounce();", 2000);
+    }
+
+    function bounce() {
+        var ball = document.getElementById("ball"),
+            ht = window.innerHeight - 50,
+            wd = window.innerWidth - 50,
+            speed = 2;
+        document.getElementById("score").innerHTML = count;
+
+        if (flagx)
+            x += speed;
+        else
+            x -= speed;
+        if (flagy)
+            y += speed;
+        else
+            y -= speed;
+        if (x < 10 || x > wd)
+            flagx = !flagx;
+        if (y < 10)
+            flagy = !flagy;
+        if (x > b && x < (b + 350) && y > (ht - 20)) {
+            flagy = !flagy;
+            count++;
+        }
+        if (y > ht + speed) {
+            game = 0;
+        }
+        ball.style.left = x;
+        ball.style.top = y;
+
+        var bar = document.getElementById("bar");
+        document.onkeydown = function(e) {
+            switch (e.keyCode) {
+                case 37:
+                    if (b > 0)
+                        b -= 10;
+                    break;
+                case 39:
+                    if ((b + 315) < wd)
+                        b += 10;
+                    break;
+            }
+            bar.style.left = b;
+
+        }
+
+        if (game == 1)
+            setTimeout("bounce()", 1);
+        else {
+            reset();
+        }
+    }
+</script>
+
+</html>
+
+<body onload="bounce();">
+    <div id="score">0</div>
+    <div id="ball"></div>
+    <div id="bar"></div>
+</body>
